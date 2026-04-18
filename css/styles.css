@@ -1,0 +1,5 @@
+body { background: white; }
+.hero { background: black; color: white; padding: 40px; }
+.nav-buttons { padding: 16; color: white;}
+.navbar { background-color: rgba(0, 0, 0, 0.758);}
+.navbar-name { text-align: center; color: white;}
