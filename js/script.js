@@ -27,28 +27,22 @@ async function initialLoadProducts() {
 function displayProducts() {
     const productList = document.getElementById("product-list");
 
-    // Clear loading placeholders if needed
     productList.innerHTML = "";
 
     products.forEach(product => {
       const card = document.createElement("div");
       card.className = "col-md-4 col-sm-6 mb-4";
 
-      // Safe image fallback
       const image = product.image || "images/placeholder.jpg";
 
-      // Safe title fallback
       const title = product.title || "Error Loading Name";
 
-      // Safe description fallback
       const description =
         product.product?.description?.substring(0, 100) + "..." ||
         "No description available.";
 
-      // Safe price fallback
       const price = product.price?.raw || "Unavailable";
 
-      // Safe rating fallback
       const rating = product.rating || "N/A";
 
       card.innerHTML = `
@@ -86,13 +80,13 @@ function displayProducts() {
         </div>
       `;
 
-      // Add cart functionality
       card.querySelector(".add-cart-btn").addEventListener("click", () => {
         addToCart({
           asin: product.asin,
           name: title,
           price: product.price?.value || 0,
-          image: image
+          image: image,
+          quantity: 1
         });
       });
 
@@ -101,20 +95,23 @@ function displayProducts() {
 
   } 
 
-// ==========================
-// CART STORAGE
-// ==========================
 function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const existingProduct = cart.find(item => item.asin === product.asin);
 
-  cart.push(product);
-
+  if (existingProduct) {
+    existingProduct.quantity += 1;
+  } else {
+    cart.push(product);
+  }
   localStorage.setItem("cart", JSON.stringify(cart));
-
-  alert(`${product.name} added to cart!`);
+  displayCart();
+  alert(`${product.name} has been added to cart! 
+  Click on the Cart button to view your saved items or keep browsing to add more items here`);
 }
 
-// ==========================
+
+
 
 initialLoadProducts();
 
@@ -130,6 +127,7 @@ async function searchItems() {
     const data = await response.json();
 
     products = data.search_results;
+    document.getElementById("product-list-initial").id = "product-list";
     displayProducts();
   }
    catch (error) {
@@ -144,6 +142,18 @@ async function searchItems() {
   }})
 }
 searchItems();
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function loadIndividualDetails() {
   try {
@@ -168,7 +178,254 @@ function individualProduct (product) {
   document.getElementById("individualProductPrice").textContent = product.prices[0].raw; 
   document.getElementById("description").textContent = product.product.description
   document.getElementById("mainImage").src = product.image
-  document.getElementById("reviewsContainer").textContent = product.product.top_reviews
+  reviews = product.product.top_reviews
+
+  const reviewsContainer = document.getElementById("reviewsContainer");
+  reviewsContainer.innerHTML = "";
+
+  if (!reviews || reviews.length === 0) {
+    reviewsContainer.innerHTML = `
+      <div class="col-12">
+        <p>No reviews available.</p>
+      </div>
+    `;
+    return;
+  }
+
+  reviews.forEach(review => {
+    const reviewCard = document.createElement("div");
+    reviewCard.className = "col-md-6";
+
+    reviewCard.innerHTML = `
+      <div class="card h-100 shadow-sm p-3">
+        
+        <h5 class="card-title">${review.title || "No Title"}</h5>
+        
+        <p class="text-warning">
+          Rating: ${review.rating || "N/A"} ★
+        </p>
+        
+        <p class="card-text">
+          ${review.body || "No review text available."}
+        </p>
+        
+        <p class="text-muted small">
+          By ${review.profile?.name || "Anonymous"}  
+          <br>
+          ${review.date?.raw || ""}
+        </p>
+
+      </div>
+    `;
+});
+    document.querySelector(".btn.btn-dark.w-100.mt-3").addEventListener("click", () => {
+        addToCart({
+          asin: product.product.asin,
+          name: product.title,
+          price: product.prices[0].raw || 0,
+          image: product.image,
+          quantity: 1
+        });
+      });
+
+    reviewsContainer.appendChild(reviewCard);
+  
 }
 
 loadIndividualDetails() ;
+
+
+
+
+
+
+
+function displayCart() {
+  const cartItems = document.getElementById("cart-items");
+  const totalElement = document.getElementById("total");
+
+  if (!cartItems || !totalElement) return;
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  cartItems.innerHTML = "";
+
+  let total = 0;
+
+  // Empty cart 
+  if (cart.length === 0) {
+    cartItems.innerHTML = `
+      <div class="text-center mt-5">
+        <h4>Your cart is empty 🛒</h4>
+      </div>
+    `;
+    totalElement.textContent = "0.00";
+    return;
+  }
+
+  cart.forEach((item, index) => {
+    const price = Number(item.price) || 0;
+    const quantity = Number(item.quantity) || 1;
+
+    const subtotal = price * quantity;
+    total += subtotal;
+
+    const card = document.createElement("div");
+    card.className = "card mb-3 shadow-sm";
+
+    card.innerHTML = `
+      <div class="row p-3 align-items-center">
+
+        <div class="col-md-2 text-center">
+          <img src="${item.image}" 
+               alt="${item.name}" 
+               class="img-fluid" 
+               style="max-height:100px;">
+        </div>
+
+        <div class="col-md-6">
+          <h5>${item.name}</h5>
+          <p class="mb-1">Price: $${price.toFixed(2)}</p>
+          <p class="mb-1">Quantity: ${quantity}</p>
+          <p class="mb-1"><strong>Subtotal: $${subtotal.toFixed(2)}</strong></p>
+        </div>
+
+        <div class="col-md-4 text-center">
+          
+          <button class="btn btn-sm btn-secondary increase-btn" data-index="${index}">
+            +
+          </button>
+
+          <button class="btn btn-sm btn-secondary decrease-btn" data-index="${index}">
+            -
+          </button>
+
+          <button class="btn btn-sm btn-danger remove-btn mt-2" data-index="${index}">
+            Remove
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+    cartItems.appendChild(card);
+  });
+
+  totalElement.textContent = total.toFixed(2);
+
+  // REMOVE ITEM
+  document.querySelectorAll(".remove-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.dataset.index);
+
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      displayCart();
+    });
+  });
+
+  // INCREASE QUANTITY
+  document.querySelectorAll(".increase-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.dataset.index);
+
+      cart[index].quantity += 1;
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      displayCart();
+    });
+  });
+
+  document.querySelectorAll(".decrease-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.dataset.index);
+
+      if (cart[index].quantity > 1) {
+        cart[index].quantity -= 1;
+      } else {
+        cart.splice(index, 1);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      displayCart();
+    });
+  });
+}
+
+displayCart();
+
+
+
+
+
+
+
+
+
+
+
+
+
+function loadCheckout() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const container = document.getElementById("checkout-items");
+  const totalEl = document.getElementById("checkout-total");
+
+  if (!container || !totalEl) return;
+
+  container.innerHTML = "";
+
+  if (cart.length === 0) {
+    container.innerHTML = "<p>Your cart is empty.</p>";
+    totalEl.textContent = "0.00";
+    return;
+  }
+
+  let total = 0;
+
+  cart.forEach(item => {
+    const subtotal = item.price * item.quantity;
+    total += subtotal;
+
+    const div = document.createElement("div");
+    div.className = "d-flex justify-content-between border-bottom py-2";
+
+    div.innerHTML = `
+      <div>
+        <strong>${item.name}</strong><br>
+        <small>Qty: ${item.quantity}</small>
+      </div>
+      <div>
+        $${subtotal.toFixed(2)}
+      </div>
+    `;
+
+    container.appendChild(div);
+  });
+
+  totalEl.textContent = total.toFixed(2);
+}
+
+function placeOrder() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  alert("Your order has been placed successfully!");
+  localStorage.removeItem("cart");
+  window.location.href = "index.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadCheckout();
+
+  document.getElementById("placeOrderBtn")
+    .addEventListener("click", placeOrder);
+});
+

@@ -7,11 +7,36 @@
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <nav class="navbar">
-    <a class="navbar-name" style="text-align: center;" href="index.html">Nile</a>
-    <div class="nav-buttons-container">
-      <a class="nav-buttons" href="products.html">Products</a>
-      <a class="nav-buttons" href="about.html">About Us</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="index.html">Nile</a>
+
+      <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
+        <ul class="navbar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link" href="products.html">Search</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="cart.html">Cart</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="checkout.html">Checkout</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About Us</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="contact-us.html">Contact Us</a>
+          </li>
+
+        </ul>
+      </div>
     </div>
   </nav>
 
@@ -21,8 +46,28 @@
   </header>
 
   <main class="container mt-4">
+    <h3 class="text-center">From Christmas Gifts to Electronics, Nile has everything you need</h3>
+
+    <div class="text-center">
+      <p>To know more about us and our mission head to the "<a href="about.html">About Us</a>" page</p>
+    </div>
+
+    
+    <section class="container my-5 text-center">
+    <h4>Why Shop With Nile?</h4>
+
+    <div class="row mt-4">
+      <div class="col-md-4 home-line">Access to Millions of products</div>
+      <div class="col-md-4 home-line">Fast and Easy Checkout</div>
+      <div class="col-md-4 home-line">Easy Contact for Customer Support</div>
+    </div>
+  </section>
+
+<h5>Have a product you can't seem to find with us or simply need any help? head to our <a href="contact-us.html">Contact Us</a> page right now for quick and easy help</h5>
+
+
     <h2>Some Top Featured Products</h2>
-    <div class="row" id="featured"></div>
+    <div class="row" id="product-list"></div>
   </main>
 
   <footer class="bg-dark text-white text-center py-4 mt-5">

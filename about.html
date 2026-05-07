@@ -3,21 +3,91 @@
   <meta charset="UTF-8">
   <meta name="Dhruv JAIN" content="width=device-width">
   <title>About</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <nav class="navbar">
-    <a class="navbar-name" style="text-align: center;" href="index.html">Nile</a>
-      <div class="nav-buttons-container">
-        <a class="nav-buttons" href="index.html">Home</a>
-        <a class="nav-buttons" href="products_and_search.html">Products</a>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="index.html">Nile</a>
+
+      <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
+        <ul class="navbar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="products.html">Search</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="cart.html">Cart</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="checkout.html">Checkout</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="contact-us.html">Contact Us</a>
+          </li>
+
+        </ul>
+      </div>
     </div>
   </nav>
 
   <header class="hero text-center">
     <h1>About Us</h1>
   </header>
+
+  <main>
+    <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm p-3 text-center">
+        <h4>Who We Are</h4>
+        <p>
+          We are a student built mock store platform focused on creating a
+          simple, fast, and easy shopping experience. Our goal is to
+          make product discovery effortless and enjoyable.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm p-3 text-center">
+        <h4>Our Mission</h4>
+        <p>
+          Our mission is to (lose as little points as possible on the project) simplify online shopping by combining RainForestApi for scraping Amazon,
+          simple js, and a seamless cart and checkout experience.
+          We believe shopping should be quick and user friendly.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm p-3 text-center">
+        <h4>Our Guarantee</h4>
+        <p>
+          We ensure accurate product data and smooth browsing (of course with a few seconds of delay thatis) and a reliable
+          checkout process (don't worry it doesn't actually checkout anything). this is a CMS project, so it is 
+          my guarantee that nothing you buy will actually arrive, so start browsing right now to get the products
+          you have always wanted!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Our journey has just started if you want to support us by funding us please go to the <a href="contact-us.html">Contact Us</a> page or by simply buying a product from our store!</h3>
+  </main>
+
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <p class="mb-0">&copy; Nile | CS472 P10 </p>
+  </footer>
 
 </body>
 </html>
